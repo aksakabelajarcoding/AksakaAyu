@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aksaka | Cyber-Vault</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --red: #ff0000; --bg: #030303; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: var(--bg); 
+            color: white; 
+            font-family: 'JetBrains Mono', monospace; 
+            overflow: hidden; 
+            height: 100vh;
+        }
+
+        /* Navigasi Atas - Super Rapi */
+        nav { 
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            display: flex; justify-content: space-around; padding: 15px 0;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,0,0,0.2);
+        }
+        .nav-link { font-size: 10px; font-weight: 800; color: #555; transition: 0.3s; cursor: pointer; letter-spacing: 2px; }
+        .nav-link.active { color: var(--red); text-shadow: 0 0 10px var(--red); }
+
+        /* Container Utama */
+        .content-wrapper {
+            margin-top: 60px; height: calc(100vh - 60px);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px; overflow-y: auto; scrollbar-width: none;
+        }
+
+        /* Foto Profil - Ukuran Ideal */
+        .profile-box {
+            position: relative; width: 110px; height: 110px; margin-bottom: 15px;
+            border-radius: 50%; padding: 3px; border: 1px dashed var(--red);
+        }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 20px; width: 100%; max-width: 350px;
+        }
+
+        .tab-content { display: none; width: 100%; animation: fadeInUp 0.4s ease forwards; }
+        .tab-content.active { display: flex; flex-direction: column; align-items: center; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pricing Items */
+        .price-row {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; padding: 12px; margin-bottom: 8px;
+            background: rgba(255,0,0,0.05); border-left: 2px solid var(--red); border-radius: 5px;
+        }
+
+        /* Terminal Effect Intro */
+        #boot-screen {
+            position: fixed; inset: 0; background: #000; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .video-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.2; }
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body onclick="initSystem()">
+
+    <audio id="bgm" loop><source src="https://files.catbox.moe/6v0p6a.mp3" type="audio/mpeg"></audio>
+
+    <div id="boot-screen">
+        <div id="boot-text" class="text-red-600 text-[10px] mb-4 text-center"></div>
+        <div class="text-[8px] tracking-[5px] text-white opacity-40 animate-pulse">TAP_TO_AUTH</div>
+    </div>
+
+    <div class="video-bg">
+        <video autoplay muted loop playsinline><source src="https://files.catbox.moe/g1h8cv.mp4" type="video/mp4"></video>
+    </div>
+
+    <nav>
+        <div class="nav-link active" onclick="switchTab(event, 'home')">HOME</div>
+        <div class="nav-link" onclick="switchTab(event, 'joki')">JOKI</div>
+        <div class="nav-link" onclick="switchTab(event, 'partner')">PARTNER</div>
+        <div class="nav-link" onclick="switchTab(event, 'social')">SOCIAL</div>
+    </nav>
+
+    <div class="content-wrapper">
+        
+        <div id="home" class="tab-content active">
+            <div class="profile-box">
+                <img src="https://files.catbox.moe/kzrkbp.jpg" class="profile-img">
+            </div>
+            <h1 class="text-xl font-black text-red-600 tracking-tighter mb-1">AKSAKA_ARCH</h1>
+            <p id="type-text" class="text-[9px] text-gray-500 mb-6 h-[10px]"></p>
+            
+            <div class="glass-card text-center">
+                <p class="text-[11px] opacity-70 leading-relaxed italic">
+                    "Building Digital Empires from the Shadows. <br> System Secured & Operational."
+                </p>
+            </div>
+        </div>
+
+        <div id="joki" class="tab-content">
+            <div class="glass-card">
+                <h3 class="text-xs font-bold mb-5 border-b border-red-900 pb-2 text-red-500 tracking-[3px]">PRICELIST_BS</h3>
+                <div class="price-row"><span class="text-[10px]">LEGENDARY</span><span class="text-red-500 font-bold">110K</span></div>
+                <div class="price-row"><span class="text-[10px]">MASTER</span><span class="text-red-500 font-bold">100K</span></div>
+                <div class="price-row"><span class="text-[10px]">ELITE</span><span class="text-red-500 font-bold">90K</span></div>
+                <div class="price-row" style="border-color: #fbbf24; background: rgba(251,191,36,0.05);">
+                    <span class="text-[10px] text-yellow-500">SPECIAL_PROMO</span><span class="text-yellow-500 font-bold">30K</span>
+                </div>
+                <a href="https://wa.me/6288902072245" class="block text-center bg-red-600 py-3 mt-4 rounded-lg text-[9px] font-bold tracking-[2px]">ORDER.EXE</a>
+            </div>
+        </div>
+
+        <div id="partner" class="tab-content">
+            <div class="profile-box" style="border-color: #ec4899;">
+                <img src="https://files.catbox.moe/j44mvd.jpg" class="profile-img">
+            </div>
+            <h2 class="text-xl font-black text-pink-500 tracking-widest mb-6">AYU_MINE</h2>
+            <div class="glass-card">
+                <p class="text-[11px] text-center opacity-70 italic">"Mendekripsi masa depan yang indah bersamamu adalah prioritas sistemku."</p>
+            </div>
+        </div>
+
+        <div id="social" class="tab-content gap-2">
+            <a href="https://github.com/Aksakabelajarngoding" class="glass-card p-4 text-[10px] tracking-widest hover:text-red-500 transition">/GITHUB</a>
+            <a href="https://tiktok.com/@Aksakaaz" class="glass-card p-4 text-[10px] tracking-widest hover:text-red-500 transition">/TIKTOK</a>
+            <a href="https://t.me/ZeroKenzz" class="glass-card p-4 text-[10px] tracking-widest hover:text-red-500 transition">/TELEGRAM</a>
+        </div>
+
+    </div>
+
+    <script>
+        const audio = document.getElementById('bgm');
+        let initialized = false;
+
+        function initSystem() {
+            if(!initialized) {
+                audio.play();
+                document.getElementById('boot-screen').style.display = 'none';
+                startTypewriter();
+                initialized = true;
+            }
+        }
+
+        function startTypewriter() {
+            let j = 0; const txt = "Full Stack Dev // Lurax Joki CEO";
+            function type() {
+                if (j < txt.length) {
+                    document.getElementById("type-text").innerHTML += txt.charAt(j);
+                    j++; setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+
+        function switchTab(evt, tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            const links = document.querySelectorAll('.nav-link');
+            contents.forEach(c => c.classList.remove('active'));
+            links.forEach(l => l.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        const bootMsg = ["> INIT_CORE...", "> BYPASSING...", "> AUTH_OK."];
+        let bi = 0;
+        function showBoot() {
+            if(bi < bootMsg.length) {
+                document.getElementById('boot-text').innerHTML += bootMsg[bi] + "<br>";
+                bi++; setTimeout(showBoot, 400);
+            }
+        }
+        window.onload = showBoot;
+    </script>
+</body>
+</html>
