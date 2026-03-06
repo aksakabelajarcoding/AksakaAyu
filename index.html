@@ -2,347 +2,669 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Aksaka | Cyber-Vault</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --red: #ff0000; --bg: #030303; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            background-https://aksakabelajarcoding.github.io/AksakaAyu/color: var(--bg); 
-            color: white; 
-            font-family: 'JetBrains Mono', monospace; 
-            overflow: hidden; 
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: #030303;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
             height: 100vh;
-            touch-action: pan-y;
+            height: 100dvh; /* Dynamic viewport height for mobile */
+            width: 100vw;
+            touch-action: none; /* Prevent default touch actions */
         }
 
-        /* SLIDE 1: HERO VIDEO FULL SCREEN */
+        /* HERO SLIDE - Full Screen */
         #hero-slide {
             position: fixed;
-            inset: 0;
-            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.6s ease;
+            background: #000;
+            transition: opacity 0.6s ease, visibility 0.6s;
         }
         
         #hero-slide.hidden-hero {
-            transform: translateY(-100%);
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
-        .hero-video {
+        .hero-video-container {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .hero-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -1;
+            object-position: center;
         }
 
         .hero-overlay {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.9));
-            z-index: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 1;
         }
 
         .hero-content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             text-align: center;
             padding: 20px;
             width: 100%;
+            pointer-events: none; /* Let clicks pass through to tap layer */
         }
 
         .hero-title {
-            font-size: clamp(2.5rem, 15vw, 5rem);
+            font-size: clamp(2.5rem, 12vw, 4rem);
             font-weight: 800;
-            color: white;
-            text-shadow: 0 0 30px rgba(255,0,0,0.5);
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255,0,0,0.8), 0 0 40px rgba(255,0,0,0.4);
             letter-spacing: -2px;
-            margin-bottom: 10px;
-            animation: glitch 2s infinite;
+            margin: 0 0 10px 0;
             line-height: 1;
+            animation: pulse-red 2s ease-in-out infinite;
         }
 
-        @keyframes glitch {
-            0%, 100% { text-shadow: 0 0 30px rgba(255,0,0,0.5); }
-            50% { text-shadow: -2px 0 30px rgba(255,0,0,0.8), 2px 0 30px rgba(255,0,0,0.8); }
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.02); }
         }
 
         .hero-subtitle {
-            font-size: clamp(8px, 3vw, 12px);
-            color: rgba(255,255,255,0.6);
-            letter-spacing: clamp(3px, 2vw, 5px);
-            margin-bottom: 40px;
+            font-size: clamp(10px, 3vw, 14px);
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            font-weight: 400;
         }
 
-        .enter-btn {
-            padding: clamp(12px, 4vw, 18px) clamp(30px, 10vw, 50px);
-            border: 2px solid var(--red);
-            background: rgba(255,0,0,0.1);
-            color: var(--red);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(10px, 3vw, 12px);
-            font-weight: 800;
-            letter-spacing: 3px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            border-radius: 4px;
-            min-width: 200px;
-        }
-
-        .enter-btn:active {
-            transform: scale(0.95);
-            background: var(--red);
-            color: black;
-        }
-
-        .enter-btn:hover {
-            background: var(--red);
-            color: black;
-            box-shadow: 0 0 30px var(--red);
-        }
-
-        .enter-btn::before {
-            content: '';
+        /* Tap Layer - Full screen clickable */
+        .tap-layer {
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.5s;
-        }
-
-        .enter-btn:hover::before {
-            left: 100%;
-        }
-
-        /* Swipe indicator */
-        .swipe-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+            z-index: 10;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
             align-items: center;
-            gap: 10px;
-            animation: bounce 2s infinite;
-            cursor: pointer;
+            padding-bottom: 80px;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-15px); }
+        .enter-hint {
+            background: rgba(255, 0, 0, 0.9);
+            color: #000;
+            padding: 15px 40px;
+            font-size: clamp(12px, 4vw, 14px);
+            font-weight: 800;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            animation: bounce-btn 1.5s infinite;
+            box-shadow: 0 0 30px rgba(255,0,0,0.6);
+            pointer-events: auto;
+            border: 2px solid #ff0000;
+            min-width: 200px;
+            text-align: center;
         }
 
-        .swipe-line {
-            width: 2px;
-            height: 50px;
-            background: linear-gradient(to bottom, var(--red), transparent);
-            border-radius: 2px;
+        @keyframes bounce-btn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .swipe-text {
-            font-size: clamp(8px, 2.5vw, 10px);
-            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
             letter-spacing: 2px;
-            text-transform: uppercase;
+            margin-top: 10px;
         }
 
-        /* Navigasi Atas - Mobile Optimized */
-        nav { 
-            position: fixed; 
-            top: 0; 
-            width: 100%; 
-            z-index: 100;
-            display: flex; 
-            justify-content: space-around; 
-            padding: 12px 0;
-            background: rgba(0,0,0,0.9); 
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,0,0,0.2);
+        .arrow-down {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid #ff0000;
+            border-bottom: 2px solid #ff0000;
+            transform: rotate(45deg);
+            margin-top: 10px;
+            animation: arrow-bounce 1s infinite;
         }
 
-        .nav-link { 
-            font-size: clamp(9px, 2.5vw, 11px); 
-            font-weight: 800; 
-            color: #555; 
-            transition: 0.3s; 
-            cursor: pointer; 
-            letter-spacing: 1px;
-            padding: 8px 4px;
+        @keyframes arrow-bounce {
+            0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; }
+            50% { transform: rotate(45deg) translateY(10px); opacity: 0.5; }
+        }
+
+        /* MAIN APP */
+        #app {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             position: relative;
         }
 
-        .nav-link.active { 
-            color: var(--red); 
-            text-shadow: 0 0 10px var(--red); 
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,0,0,0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            padding: 0 10px;
         }
 
-        .nav-link::after {
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 5px;
+            font-size: clamp(10px, 2.8vw, 12px);
+            font-weight: 700;
+            color: #666;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            border: none;
+            background: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-item.active {
+            color: #ff0000;
+        }
+
+        .nav-item.active::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 0;
+            width: 20px;
             height: 2px;
-            background: var(--red);
-            transition: width 0.3s;
+            background: #ff0000;
+            box-shadow: 0 0 10px #ff0000;
         }
 
-        .nav-link.active::after {
-            width: 100%;
-        }
-
-        /* Container Utama */
-        .content-wrapper {
-            margin-top: 55px; 
-            height: calc(100vh - 55px);
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            padding: 15px; 
-            overflow-y: auto; 
+        /* Content Area */
+        .content-area {
+            margin-top: 60px;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            padding: 20px 15px;
+            scroll-behavior: smooth;
         }
 
-        .content-wrapper::-webkit-scrollbar {
+        /* Tab Content */
+        .tab-panel {
             display: none;
-        }
-
-        /* Foto Profil - Responsive */
-        .profile-box {
-            position: relative; 
-            width: clamp(90px, 25vw, 120px); 
-            height: clamp(90px, 25vw, 120px); 
-            margin-bottom: 15px;
-            border-radius: 50%; 
-            padding: 3px; 
-            border: 2px dashed var(--red);
-            animation: pulse-border 2s infinite;
-        }
-
-        @keyframes pulse-border {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(255,0,0,0.4); }
-            50% { box-shadow: 0 0 0 15px rgba(255,0,0,0); }
-        }
-
-        .profile-img { 
-            width: 100%; 
-            height: 100%; 
-            border-radius: 50%; 
-            object-fit: cover; 
-        }
-
-        /* Glassmorphism Card - Mobile optimized */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 12px; 
-            padding: clamp(15px, 5vw, 25px); 
-            width: 100%; 
-            max-width: 400px;
+            width: 100%;
+            max-width: 500px;
             margin: 0 auto;
+            animation: fadeIn 0.3s ease;
         }
 
-        .tab-content { 
-            display: none; 
-            width: 100%; 
-            animation: fadeInUp 0.4s ease forwards; 
-            padding-bottom: 20px;
-        }
-        
-        .tab-content.active { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+        .tab-panel.active {
+            display: block;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Pricing Items - Touch friendly */
-        .price-row {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            width: 100%; 
-            padding: clamp(10px, 3vw, 15px); 
-            margin-bottom: 10px;
-            background: rgba(255,0,0,0.05); 
-            border-left: 3px solid var(--red); 
-            border-radius: 8px;
-            transition: all 0.3s;
-            min-height: 50px;
+        /* Profile Section */
+        .profile-container {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .price-row:active {
+        .profile-img-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            box-shadow: 0 0 20px rgba(255,0,0,0.4);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #000;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ff0000;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        .profile-role {
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
+            height: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .quote-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+            text-align: center;
+            margin: 0;
+        }
+
+        /* Pricing */
+        .section-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #ff0000;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,0,0,0.3);
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255,0,0,0.05);
+            border-left: 3px solid #ff0000;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .price-item:active {
             transform: scale(0.98);
             background: rgba(255,0,0,0.1);
         }
 
-        .price-row:hover {
-            background: rgba(255,0,0,0.1);
-            transform: translateX(5px);
+        .price-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
         }
 
-        /* Social Links - Bigger touch targets */
-        .social-link {
+        .price-value {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ff0000;
+        }
+
+        .price-item.promo {
+            border-left-color: #fbbf24;
+            background: rgba(251,191,36,0.1);
+        }
+
+        .price-item.promo .price-value {
+            color: #fbbf24;
+        }
+
+        .cta-button {
             display: block;
             width: 100%;
-            padding: clamp(15px, 4vw, 20px);
-            margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
+            padding: 16px;
+            background: #ff0000;
+            color: #000;
             text-align: center;
-            font-size: clamp(10px, 3vw, 12px);
-            letter-spacing: 2px;
-            color: white;
             text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(255,0,0,0.4);
+            transition: all 0.3s;
+            border: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cta-button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 10px rgba(255,0,0,0.3);
+        }
+
+        /* Partner */
+        .partner-img-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #ec4899, #f472b6);
+            box-shadow: 0 0 20px rgba(236,72,153,0.4);
+        }
+
+        .partner-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ec4899;
+            text-align: center;
+            margin: 0 0 20px 0;
+        }
+
+        /* Social */
+        .social-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
             transition: all 0.3s;
         }
 
-        .social-link:active {
+        .social-btn:active {
+            background: rgba(255,0,0,0.1);
+            border-color: #ff0000;
+            color: #ff0000;
             transform: scale(0.98);
-            border-color: var(--red);
-            color: var(--red);
         }
 
-        /* Landscape mode adjustments */
-        @media (max-height: 500px) and (orientation: landscape) {
+        /* Loading State */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,0,0,0.3);
+            border-top-color: #ff0000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fix for iOS Safari */
+        @supports (-webkit-touch-callout: none) {
+            .hero-video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Landscape */
+        @media (max-height: 500px) {
             .hero-title {
                 font-size: 2rem;
-                margin-bottom: 5px;
             }
+            .profile-img-wrapper, .partner-img-wrapper {
+                width: 80px;
+                height: 80px;
+            }
+            nav {
+                height: 50px;
+            }
+            .content-area {
+                margin-top: 50px;
+                height: calc(100% - 50px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loader" class="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="bgm" preload="auto" loop>
+        <source src="https://files.catbox.moe/6v0p6a.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- HERO SLIDE -->
+    <div id="hero-slide">
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline webkit-playsinline x5-playsinline>
+                <source src="https://files.catbox.moe/g1h8cv.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <div style="font-size: 10px; color: #ff0000; margin-bottom: 10px; letter-spacing: 4px;">SYSTEM_OVERRIDE</div>
+            <h1 class="hero-title">AKSAKA</h1>
+            <p class="hero-subtitle">CYBER_VAULT_INITIATED</p>
+        </div>
+
+        <!-- TAP LAYER - This handles all interactions -->
+        <div class="tap-layer" id="tapLayer">
+            <div class="enter-hint" id="enterBtn">TAP TO ENTER</div>
+            <div class="swipe-text">or swipe up</div>
+            <div class="arrow-down"></div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app">
+        <nav>
+            <button class="nav-item active" onclick="switchTab('home')">HOME</button>
+            <button class="nav-item" onclick="switchTab('joki')">JOKI</button>
+            <button class="nav-item" onclick="switchTab('partner')">PARTNER</button>
+            <button class="nav-item" onclick="switchTab('social')">SOCIAL</button>
+        </nav>
+
+        <div class="content-area">
             
-            .hero-subtitle {
-                margin-bottom: 20px;
-            }
-            
-            .enter-btn {
-                padding: 10px 30px;
-            }
-            
-            .swipe-indicator {
-                bottom: 20px;
-            }
+            <!-- HOME TAB -->
+            <div id="home" class="tab-panel active">
+                <div class="profile-container">
+                    <div class="profile-img-wrapper">
+                        <img src="https://files.catbox.moe/kzrkbp.jpg" class="profile-img" alt="Aksaka">
+                    </div>
+                    <h2 class="profile-name">AKSAKA_ARCH</h2>
+                    <div class="profile-role" id="typewriter"></div>
+                </div>
+                
+                <div class="card">
+                    <p class="quote-text">
+                        "Building Digital Empires from the Shadows.<br>
+                        System Secured & Operational."
+                    </p>
+                </div>
+            </div>
+
+            <!-- JOKI TAB -->
+            <div id="joki" class="tab-panel">
+                <div class="card">
+                    <div class="section-title">PRICELIST_BS</div>
+                    
+                    <div class="price-item">
+                        <span class="price-label">LEGENDARY</span>
+                        <span class="price-value">110K</span>
+                    </div>
+                    
+                    <div class="price-item">
+                        <span class="price-label">MASTER</span>
+                        <span class="price-value">100K</span>
+                    </div>
+                    
+                    <div class="price-item">
+                        <span class="price-label">ELITE</span>
+                        <span class="price-value">90K</span>
+                    </div>
+                    
+                    <div class="price-item promo">
+                        <span class="price-label" style="color: #fbbf24;">SPECIAL PROMO</span>
+                        <span class="price-value">30K</span>
+                    </div>
+
+                    <a href="https://wa.me/6288902072245" class="cta-button">ORDER NOW</a>
+                </div>
+            </div>
+
+            <!-- PARTNER TAB -->
+            <div id="partner" class="tab-panel">
+                <div class="profile-container" style="margin-top: 20px;">
+                    <div class="partner-img-wrapper">
+                        <img src="https://files.catbox.moe/j44mvd.jpg" class="profile-img" alt="Partner">
+                    </div>
+                    <h2 class="partner-name">AYU_MINE</h2>
+                </div>
+                
+                <div class="card">
+                    <p class="quote-text" style="color: #ec4899;">
+                        "Mendekripsi masa depan yang indah bersamamu adalah prioritas sistemku."
+                    </p>
+                </div>
+            </div>
+
+            <!-- SOCIAL TAB -->
+            <div id="social" class="tab-panel">
+                <div class="card" style="background: transparent; border: none; padding: 0;">
+                    <div class="section-title" style="text-align: center; border: none;">CONNECT_NODES</div>
+                    
+                    <div class="social-grid">
+                        <a href="https://github.com/Aksakabelajarngoding" class="social-btn">GITHUB</a>
+                        <a href="https://tiktok.com/@Aksakaaz" class="social-btn">TIKTOK</a>
+                        <a href="https://t.me/ZeroKenzz" class="social-btn">TELEGRAM</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // State
+        let isEntered = false;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+
+        // Elements
+        const heroSlide = document.getElementById('hero-slide');
+        const tapLayer = document.getElementById('tapLayer');
+        const enterBtn = document.getElementById('enterBtn');
+        const bgm = document.getElementById('bgm');
+        const loader = document.getElementById('loader');
+
+        // Hide loader when ready
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 500);
+        });
+
+        // ENTER SITE FUNCTION - Works on all devices
+        function enterSite() {
+            if (isEntered) return;
+            isEntered = true;
+
+            // Play audio
+            bgm.volume = 0.8;
+            bgm.play().catch(e => {
+                console.log('Audio play failed:', e);
+                // Continue anyway even if audio fails
+            });
+
+            // Hide hero with animation
+            heroSlide.style.opacity = '0';
+            setTimeout(() => {
+                heroSlide.style.display = 'none';
+                startTypewriter();
+            }, 600);
+
+            // Enable scrolling
+            document.body.}
             
             .swipe-line {
                 height: 30px;
