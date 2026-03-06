@@ -664,6 +664,307 @@
             }, 600);
 
             // Enable scrolling
+            document.body.on {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: #ff0000;
+            color: #000;
+            text-align: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(255,0,0,0.4);
+            transition: all 0.3s;
+            border: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cta-button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 10px rgba(255,0,0,0.3);
+        }
+
+        /* Partner */
+        .partner-img-wrapper {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #ec4899, #f472b6);
+            box-shadow: 0 0 20px rgba(236,72,153,0.4);
+        }
+
+        .partner-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ec4899;
+            text-align: center;
+            margin: 0 0 20px 0;
+        }
+
+        /* Social */
+        .social-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .social-btn:active {
+            background: rgba(255,0,0,0.1);
+            border-color: #ff0000;
+            color: #ff0000;
+            transform: scale(0.98);
+        }
+
+        /* Loading State */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,0,0,0.3);
+            border-top-color: #ff0000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fix for iOS Safari */
+        @supports (-webkit-touch-callout: none) {
+            .hero-video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Landscape */
+        @media (max-height: 500px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .profile-img-wrapper, .partner-img-wrapper {
+                width: 80px;
+                height: 80px;
+            }
+            nav {
+                height: 50px;
+            }
+            .content-area {
+                margin-top: 50px;
+                height: calc(100% - 50px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loader" class="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="bgm" preload="auto" loop>
+        <source src="https://files.catbox.moe/6v0p6a.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- HERO SLIDE -->
+    <div id="hero-slide">
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline webkit-playsinline x5-playsinline>
+                <source src="https://files.catbox.moe/g1h8cv.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <div style="font-size: 10px; color: #ff0000; margin-bottom: 10px; letter-spacing: 4px;">SYSTEM_OVERRIDE</div>
+            <h1 class="hero-title">AKSAKA</h1>
+            <p class="hero-subtitle">CYBER_VAULT_INITIATED</p>
+        </div>
+
+        <!-- TAP LAYER - This handles all interactions -->
+        <div class="tap-layer" id="tapLayer">
+            <div class="enter-hint" id="enterBtn">TAP TO ENTER</div>
+            <div class="swipe-text">or swipe up</div>
+            <div class="arrow-down"></div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app">
+        <nav>
+            <button class="nav-item active" onclick="switchTab('home')">HOME</button>
+            <button class="nav-item" onclick="switchTab('joki')">JOKI</button>
+            <button class="nav-item" onclick="switchTab('partner')">PARTNER</button>
+            <button class="nav-item" onclick="switchTab('social')">SOCIAL</button>
+        </nav>
+
+        <div class="content-area">
+            
+            <!-- HOME TAB -->
+            <div id="home" class="tab-panel active">
+                <div class="profile-container">
+                    <div class="profile-img-wrapper">
+                        <img src="https://files.catbox.moe/kzrkbp.jpg" class="profile-img" alt="Aksaka">
+                    </div>
+                    <h2 class="profile-name">AKSAKA_ARCH</h2>
+                    <div class="profile-role" id="typewriter"></div>
+                </div>
+                
+                <div class="card">
+                    <p class="quote-text">
+                        "Building Digital Empires from the Shadows.<br>
+                        System Secured & Operational."
+                    </p>
+                </div>
+            </div>
+
+            <!-- JOKI TAB -->
+            <div id="joki" class="tab-panel">
+                <div class="card">
+                    <div class="section-title">PRICELIST_BS</div>
+                    
+                    <div class="price-item">
+                        <span class="price-label">LEGENDARY</span>
+                        <span class="price-value">110K</span>
+                    </div>
+                    
+                    <div class="price-item">
+                        <span class="price-label">MASTER</span>
+                        <span class="price-value">100K</span>
+                    </div>
+                    
+                    <div class="price-item">
+                        <span class="price-label">ELITE</span>
+                        <span class="price-value">90K</span>
+                    </div>
+                    
+                    <div class="price-item promo">
+                        <span class="price-label" style="color: #fbbf24;">SPECIAL PROMO</span>
+                        <span class="price-value">30K</span>
+                    </div>
+
+                    <a href="https://wa.me/6288902072245" class="cta-button">ORDER NOW</a>
+                </div>
+            </div>
+
+            <!-- PARTNER TAB -->
+            <div id="partner" class="tab-panel">
+                <div class="profile-container" style="margin-top: 20px;">
+                    <div class="partner-img-wrapper">
+                        <img src="https://files.catbox.moe/j44mvd.jpg" class="profile-img" alt="Partner">
+                    </div>
+                    <h2 class="partner-name">AYU_MINE</h2>
+                </div>
+                
+                <div class="card">
+                    <p class="quote-text" style="color: #ec4899;">
+                        "Mendekripsi masa depan yang indah bersamamu adalah prioritas sistemku."
+                    </p>
+                </div>
+            </div>
+
+            <!-- SOCIAL TAB -->
+            <div id="social" class="tab-panel">
+                <div class="card" style="background: transparent; border: none; padding: 0;">
+                    <div class="section-title" style="text-align: center; border: none;">CONNECT_NODES</div>
+                    
+                    <div class="social-grid">
+                        <a href="https://github.com/Aksakabelajarngoding" class="social-btn">GITHUB</a>
+                        <a href="https://tiktok.com/@Aksakaaz" class="social-btn">TIKTOK</a>
+                        <a href="https://t.me/ZeroKenzz" class="social-btn">TELEGRAM</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // State
+        let isEntered = false;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+
+        // Elements
+        const heroSlide = document.getElementById('hero-slide');
+        const tapLayer = document.getElementById('tapLayer');
+        const enterBtn = document.getElementById('enterBtn');
+        const bgm = document.getElementById('bgm');
+        const loader = document.getElementById('loader');
+
+        // Hide loader when ready
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 500);
+        });
+
+        // ENTER SITE FUNCTION - Works on all devices
+        function enterSite() {
+            if (isEntered) return;
+            isEntered = true;
+
+            // Play audio
+            bgm.volume = 0.8;
+            bgm.play().catch(e => {
+                console.log('Audio play failed:', e);
+                // Continue anyway even if audio fails
+            });
+
+            // Hide hero with animation
+            heroSlide.style.opacity = '0';
+            setTimeout(() => {
+                heroSlide.style.display = 'none';
+                startTypewriter();
+            }, 600);
+
+            // Enable scrolling
             document.body.}
             
             .swipe-line {
