@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hewan Peliharaan 3D - Pet Care</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🐾 Pet Care 3D</h1>
+            <p>Rawat hewan peliharaanmu dengan penuh kasih sayang</p>
+        </header>
+
+        <!-- Pet Selection -->
+        <div class="pet-selector">
+            <button class="pet-btn active" data-pet="kucing">🐱 Kucing</button>
+            <button class="pet-btn" data-pet="harimau">🐯 Harimau</button>
+        </div>
+
+        <!-- Main Game Area -->
+        <main class="game-area">
+            <!-- Pet Display -->
+            <div class="pet-container">
+                <div class="background"></div>
+                <canvas id="petCanvas"></canvas>
+                <div class="pet-info">
+                    <h2 id="petName">Whiskers</h2>
+                    <div class="stats">
+                        <div class="stat">
+                            <span>Kepuasan: <span id="happiness">100</span>%</span>
+                            <div class="stat-bar">
+                                <div class="stat-fill" id="happinessFill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <span>Energi: <span id="energy">100</span>%</span>
+                            <div class="stat-bar">
+                                <div class="stat-fill" id="energyFill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <span>Lapar: <span id="hunger">0</span>%</span>
+                            <div class="stat-bar">
+                                <div class="stat-fill hunger" id="hungerFill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="controls">
+                <!-- Feeding -->
+                <div class="control-section">
+                    <h3>🍽️ Beri Makan</h3>
+                    <div class="food-options">
+                        <button class="food-btn" data-food="fish">🐟 Ikan</button>
+                        <button class="food-btn" data-food="meat">🍖 Daging</button>
+                        <button class="food-btn" data-food="milk">🥛 Susu</button>
+                    </div>
+                </div>
+
+                <!-- Play & Care -->
+                <div class="control-section">
+                    <h3>🎮 Bermain & Rawat</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn" id="playBtn">🎾 Bermain</button>
+                        <button class="action-btn" id="sleepBtn">😴 Tidur</button>
+                        <button class="action-btn" id="petBtn">🤚 Belai</button>
+                    </div>
+                </div>
+
+                <!-- Clothing -->
+                <div class="control-section">
+                    <h3>👔 Ganti Baju</h3>
+                    <div class="clothes-options">
+                        <button class="clothes-btn" data-clothes="none">Tidak Ada</button>
+                        <button class="clothes-btn" data-clothes="shirt">👕 Kaos</button>
+                        <button class="clothes-btn" data-clothes="hat">🎩 Topi</button>
+                        <button class="clothes-btn" data-clothes="glasses">🕶️ Kacamata</button>
+                        <button class="clothes-btn" data-clothes="crown">👑 Mahkota</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Messages -->
+        <div class="message-box" id="messageBox"></div>
+    </div>
+
+    <script src="pet.js"></script>
+</body>
+</html>
